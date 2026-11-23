@@ -33,3 +33,22 @@ public class ArticleDto {
     private BoardDto board;
 
     /**
+     * Category that this article belongs
+     */
+    private CategoryDto category;
+
+    /**
+     * Created by
+     */
+    private String createdBy;
+
+    /**
+     * Created date
+     */
+    private LocalDateTime createdDate;
+
+    /**
+     * Last modified date
+     */
+    private LocalDateTime lastModifiedDate;
+}
