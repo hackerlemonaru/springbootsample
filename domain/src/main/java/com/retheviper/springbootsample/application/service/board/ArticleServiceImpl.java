@@ -86,3 +86,19 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional(readOnly = true)
     public ArticleDto getArticle(final long id) {
         return createDto(getEntity(id));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public ArticleDto createArticle(final ArticleDto dto) {
+        checkBoardAndCategory(dto);
+        return save(this.mapper.map(dto, Article.class));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
