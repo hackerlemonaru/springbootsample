@@ -56,3 +56,19 @@ public interface ArticleService {
      * @return Board article DTO
      */
     ArticleDto updateArticle(ArticleDto dto);
+
+    /**
+     * Delete existing board article.
+     *
+     * @param id Board article's ID
+     */
+    void deleteArticle(long id);
+
+    /**
+     * Check existing by ID.
+     *
+     * @param id ID
+     * @return result of check
+     */
+    void checkExists(long id);
+}
