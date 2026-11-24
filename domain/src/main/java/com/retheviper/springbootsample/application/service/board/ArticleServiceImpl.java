@@ -49,3 +49,40 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional(readOnly = true)
     public Page<ArticleDto> listArticle(final long boardId, final Pageable pageable) {
         return this.repository.findByBoardIdIs(pageable, boardId).map(this::createDto);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ArticleDto> listArticle(final long boardId, final Pageable pageable, final String keyword,
+                                        final int keywordType) {
+        switch (keywordType) {
+            case 0:
+                return this.repository.findByTitleContainingAndBoardIdIs(pageable, keyword, boardId)
+                        .map(this::createDto);
+            case 1:
+                return this.repository.findByContentContainingAndBoardIdIs(pageable, keyword, boardId)
+                        .map(this::createDto);
+            case 2:
+                return this.repository.findByCreatedByContainingAndBoardIdIs(pageable, keyword, boardId)
+                        .map(this::createDto);
+            case 3:
+                final CategoryDto dto = new CategoryDto();
+                dto.setName(keyword);
+                return this.repository.findByCategoryIdIsAndBoardIdIs(pageable,
+                        this.categoryService.getCategory(dto).getId(), boardId)
+                        .map(this::createDto);
+            default:
+                throw new UnsupportedOperationException();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public ArticleDto getArticle(final long id) {
+        return createDto(getEntity(id));
