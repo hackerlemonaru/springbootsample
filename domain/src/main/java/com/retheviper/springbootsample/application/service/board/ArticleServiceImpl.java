@@ -24,3 +24,28 @@ public class ArticleServiceImpl implements ArticleService {
 
     /**
      * Data model converter
+     */
+    private final ModelMapper mapper;
+
+    /**
+     * Board article repository
+     */
+    private final ArticleRepository repository;
+
+    /**
+     * Board service
+     */
+    private final BoardService boardService;
+
+    /**
+     * Category service
+     */
+    private final CategoryService categoryService;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Page<ArticleDto> listArticle(final long boardId, final Pageable pageable) {
+        return this.repository.findByBoardIdIs(pageable, boardId).map(this::createDto);
