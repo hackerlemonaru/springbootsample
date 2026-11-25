@@ -153,3 +153,16 @@ public class ArticleServiceImpl implements ArticleService {
      */
     private ArticleDto createDto(final Article entity) {
         return this.mapper.map(entity, ArticleDto.class);
+    }
+
+    /**
+     * Get entity from repository.
+     *
+     * @param uid Article's ID
+     * @return Article entity
+     */
+    private Article getEntity(final long id) {
+        return this.repository.findById(id)
+                .orElseThrow(() -> new BoardException(BoardExceptionMessage.E005.getValue()));
+    }
+}
