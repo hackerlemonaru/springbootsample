@@ -19,3 +19,41 @@ import java.util.stream.StreamSupport;
  *
  * @author retheviper
  */
+@Service
+@RequiredArgsConstructor
+public class BoardServiceImpl implements BoardService {
+
+    /**
+     * Data model converter
+     */
+    private final ModelMapper mapper;
+
+    /**
+     * Board repository
+     */
+    private final BoardRepository repository;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<BoardDto> listBoard() {
+        return StreamSupport.stream(this.repository.findAll().spliterator(), false)
+                .map(this::createDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public BoardDto getBoard(final BoardDto dto) {
+        return createDto(getEntity(dto.getId()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
