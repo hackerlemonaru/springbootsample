@@ -102,3 +102,36 @@ public class ArticleServiceImpl implements ArticleService {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
+    public ArticleDto updateArticle(final ArticleDto dto) {
+        checkBoardAndCategory(dto);
+        final Article entity = getEntity(dto.getId());
+        dto.setBoard(this.boardService.getBoard(dto.getBoard()));
+        dto.setCategory(this.categoryService.getCategory(dto.getCategory()));
+        this.mapper.map(dto, entity);
+        return save(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteArticle(final long id) {
+        this.repository.deleteById(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void checkExists(final long id) {
+        if (!this.repository.existsById(id)) {
+            throw new BoardException(BoardExceptionMessage.E005.getValue());
+        }
+    }
+
+    private void checkBoardAndCategory(final ArticleDto dto) {
+        this.boardService.checkExists(dto.getBoard().getId());
+        this.categoryService.checkExists(dto.getCategory().getId());
+    }
+
