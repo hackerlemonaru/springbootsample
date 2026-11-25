@@ -52,3 +52,8 @@ public interface BoardService {
     /**
      * Check existing by ID.
      *
+     * @param id ID
+     * @return result of check
+     */
+    void checkExists(long id);
+}
