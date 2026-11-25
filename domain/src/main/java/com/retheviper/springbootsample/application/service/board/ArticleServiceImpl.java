@@ -135,3 +135,21 @@ public class ArticleServiceImpl implements ArticleService {
         this.categoryService.checkExists(dto.getCategory().getId());
     }
 
+    /**
+     * Save entity to repository and get result.
+     *
+     * @param entity enitity to save
+     * @return Saved result as DTO
+     */
+    private ArticleDto save(final Article entity) {
+        return this.createDto(this.repository.save(entity));
+    }
+
+    /**
+     * Map entity to DTO.
+     *
+     * @param entity Article entity
+     * @return Article DTO
+     */
+    private ArticleDto createDto(final Article entity) {
+        return this.mapper.map(entity, ArticleDto.class);
