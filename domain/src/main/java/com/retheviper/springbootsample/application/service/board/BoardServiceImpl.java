@@ -106,3 +106,33 @@ public class BoardServiceImpl implements BoardService {
     }
 
     /**
+     * Save entity to repository and get result.
+     *
+     * @param entity enitity to save
+     * @return Saved result as DTO
+     */
+    private BoardDto save(final Board entity) {
+        return this.createDto(this.repository.save(entity));
+    }
+
+    /**
+     * Map entity to DTO.
+     *
+     * @param entity Board entity
+     * @return Board DTO
+     */
+    private BoardDto createDto(final Board entity) {
+        return this.mapper.map(entity, BoardDto.class);
+    }
+
+    /**
+     * Get entity from repository.
+     *
+     * @param id Board's id
+     * @return Board entity
+     */
+    private Board getEntity(final long id) {
+        return this.repository.findById(id).orElseThrow(BoardException::new);
+    }
+
+}
