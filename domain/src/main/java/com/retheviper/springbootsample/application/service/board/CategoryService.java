@@ -29,3 +29,28 @@ public interface CategoryService {
 
     /**
      * Create new category.
+     *
+     * @param dto Category DTO
+     * @return Category DTO
+     */
+    CategoryDto createCategory(CategoryDto dto);
+
+    /**
+     * Update existing category.
+     *
+     * @param dto Category DTO
+     * @return Category DTO
+     */
+    CategoryDto updateCategory(CategoryDto dto);
+
+    /**
+     * Delete existing category.
+     *
+     * @param id category's ID
+     */
+    void deleteCategory(long id);
+
+    /**
+     * Check existing by ID.
+     *
+     * @param id ID
