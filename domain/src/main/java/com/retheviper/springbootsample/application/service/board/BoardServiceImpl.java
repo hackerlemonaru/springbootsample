@@ -57,3 +57,29 @@ public class BoardServiceImpl implements BoardService {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
+    public BoardDto createBoard(final BoardDto dto) {
+        checkAlreadyExists(dto.getName());
+        return save(this.mapper.map(dto, Board.class));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public BoardDto updateBoard(final BoardDto dto) {
+        checkExists(dto.getId());
+        checkAlreadyExists(dto.getName());
+        final Board entity = getEntity(dto.getId());
+        this.mapper.map(dto, entity);
+        return save(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteBoard(final long id) {
+        this.repository.deleteById(id);
