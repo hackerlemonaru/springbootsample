@@ -83,3 +83,26 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public void deleteBoard(final long id) {
         this.repository.deleteById(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void checkExists(final long id) {
+        if (!this.repository.existsById(id)) {
+            throw new BoardException(BoardExceptionMessage.E001.getValue());
+        }
+    }
+
+    /**
+     * Check board name can be created.
+     *
+     * @param name board name
+     */
+    private void checkAlreadyExists(final String name) {
+        if (this.repository.existsByName(name)) {
+            throw new BoardException(BoardExceptionMessage.E000.getValue());
+        }
+    }
+
+    /**
