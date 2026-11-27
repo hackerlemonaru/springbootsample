@@ -89,3 +89,32 @@ public class CategoryServiceImpl implements CategoryService {
         if (!this.repository.existsById(id)) {
             throw new BoardException(BoardExceptionMessage.E003.getValue());
         }
+    }
+
+    /**
+     * Check category's name can be created in specific board.
+     *
+     * @param dto category DTO
+     * @return result of check
+     */
+    private void checkAlreadyExists(final CategoryDto dto) {
+        if (this.repository.existsByNameAndBoardIdIs(dto.getName(), dto.getBoard().getId())) {
+            throw new BoardException(BoardExceptionMessage.E002.getValue());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void deleteCategory(final long id) {
+        this.repository.deleteById(id);
+    }
+
+    /**
+     * Save entity to repository and get result.
+     *
+     * @param entity enitity to save
+     * @return Saved result as DTO
+     */
