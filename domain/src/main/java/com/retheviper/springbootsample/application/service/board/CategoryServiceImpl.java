@@ -118,3 +118,28 @@ public class CategoryServiceImpl implements CategoryService {
      * @param entity enitity to save
      * @return Saved result as DTO
      */
+    private CategoryDto save(final Category entity) {
+        return this.createDto(this.repository.save(entity));
+    }
+
+    /**
+     * Map entity to DTO.
+     *
+     * @param entity Board entity
+     * @return Category DTO
+     */
+    private CategoryDto createDto(final Category entity) {
+        return this.mapper.map(entity, CategoryDto.class);
+    }
+
+    /**
+     * Get entity from repository.
+     *
+     * @param id Category's ID
+     * @return Category entity
+     */
+    private Category getEntity(final long id) {
+        return this.repository.findById(id)
+                .orElseThrow(() -> new BoardException(BoardExceptionMessage.E003.getValue()));
+    }
+}
