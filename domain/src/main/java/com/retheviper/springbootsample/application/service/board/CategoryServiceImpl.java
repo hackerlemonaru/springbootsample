@@ -34,3 +34,22 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository repository;
 
     /**
+     * Board service
+     */
+    private final BoardService boardService;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<CategoryDto> listCategory(final long boardId) {
+        return StreamSupport.stream(this.repository.findByBoardIdIs(boardId).spliterator(), false)
+                .map(this::createDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
