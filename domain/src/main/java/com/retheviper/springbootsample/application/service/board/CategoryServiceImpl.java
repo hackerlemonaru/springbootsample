@@ -53,3 +53,39 @@ public class CategoryServiceImpl implements CategoryService {
      * {@inheritDoc}
      */
     @Override
+    @Transactional(readOnly = true)
+    public CategoryDto getCategory(final CategoryDto dto) {
+        return createDto(getEntity(dto.getId()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public CategoryDto createCategory(final CategoryDto dto) {
+        checkAlreadyExists(dto);
+        return save(this.mapper.map(dto, Category.class));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public CategoryDto updateCategory(final CategoryDto dto) {
+        checkExists(dto.getId());
+        checkAlreadyExists(dto);
+        dto.setBoard(this.boardService.getBoard(dto.getBoard()));
+        final Category entity = getEntity(dto.getId());
+        this.mapper.map(dto, entity);
+        return save(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void checkExists(final long id) {
+        if (!this.repository.existsById(id)) {
+            throw new BoardException(BoardExceptionMessage.E003.getValue());
+        }
